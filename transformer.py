@@ -14,8 +14,8 @@ class Transformer:
             for r in rename:
                 old_name = list(r.keys())[0]
                 new_name = list(r.values())[0]
-                dc[new_name] = dc[old_name]
-                del dc[old_name]
+                dc.document[new_name] = dc.document[old_name]
+                del dc.document[old_name]
 
         return dc
 
@@ -27,9 +27,7 @@ class Transformer:
                 src_field_1 = c['dest_field'][0]
                 src_field_2 = c['dest_field'][1]
                 sep = c['sep']
-                dc[dest_field] = str(c[src_field_1]) + sep + str(c[src_field_2])
-                del c[src_field_1]
-                del c[src_field_2]
+                dc.document[dest_field] = str(c[src_field_1]) + sep + str(c[src_field_2])
 
         return dc
 
@@ -47,7 +45,7 @@ class Transformer:
                     for arg in args:
                         arg_name = arg['arg_name']
                         if arg['data']['type'] == 'FROM_DATA_CAPSULE':
-                            data = dc[arg['data']['src_field']]
+                            data = dc.document[arg['data']['src_field']]
                         else:
                             data = arg['data']['value']
                         params[arg_name] = data
@@ -63,7 +61,7 @@ class Transformer:
                     except Exception:
                         raise Exception('API returned to response')
 
-                dc[dest_field] = response.text
+                dc.document[dest_field] = response.text
 
         return dc
 
@@ -73,6 +71,7 @@ class Transformer:
             renamed = self.__rename(dc)
             concatenated = self.__concat(renamed)
             api_called = self.__api_call(concatenated)
+            api_called.update_fields()
             ret_list.append(api_called)
 
         return dc_list
