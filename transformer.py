@@ -71,7 +71,6 @@ class Transformer:
             renamed = self.__rename(dc)
             concatenated = self.__concat(renamed)
             api_called = self.__api_call(concatenated)
-            api_called.update_fields()
             ret_list.append(api_called)
 
         return dc_list
