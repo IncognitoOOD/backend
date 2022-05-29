@@ -25,9 +25,6 @@ class MySQLExtractor(Extractor, MySQL):
         ans = [DataCapsule(item) for item in jsons]
         return ans
 
-    def __create_object(self):
-        pass
-
 
 if __name__ == "__main__":
     obj = MySQLExtractor(json.loads(open("../sample_configs/mysql_extractor_config.json", "r").read()))

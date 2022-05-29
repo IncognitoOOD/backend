@@ -132,3 +132,4 @@ sample_configs/
 .idea/
 config_formats/
 /main_test.py
+/test/
