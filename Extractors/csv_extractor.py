@@ -20,7 +20,7 @@ class CSVExtractor(Extractor, CSV):
             for row in csv_reader:
                 rows.append(row)
         result = self.__convert_csv_list_to_json(header, rows)
-        return self.__convert_jsons_to_datacapsule_list(result)
+        return self.__convert_jsons_to_datacapsule_list(result, header)
 
     def __convert_csv_list_to_json(self, header: list, rows: list):
         result = []
@@ -31,8 +31,8 @@ class CSVExtractor(Extractor, CSV):
             result.append(current_json)
         return result
 
-    def __convert_jsons_to_datacapsule_list(self, jsons: List[dict]):
-        ans = [DataCapsule(item) for item in jsons]
+    def __convert_jsons_to_datacapsule_list(self, jsons: List[dict], header: list):
+        ans = [DataCapsule(item, header) for item in jsons]
         return ans
 
 
