@@ -9,7 +9,7 @@ from Databases.mysql import MySQL
 class MySQLLoader(Loader, MySQL):
     def __init__(self, *args, **kwargs):
         MySQL.__init__(self, *args, **kwargs)
-        self.cursor.execute("SHOW columns FROM student;")
+        self.cursor.execute("SHOW columns FROM {};".format(self.config["table"]))
         self.columns = [item["Field"] for item in self.cursor.fetchall()]
 
     def write_data_capsule_list(self, dc_list: List[DataCapsule]):
