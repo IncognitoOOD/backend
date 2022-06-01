@@ -11,8 +11,8 @@ class KafkaExtractor(Extractor, Kafka):
     def __init__(self, *args, **kwargs):
         Kafka.__init__(self, *args, **kwargs)
         self.conf = {'bootstrap.servers': self.config["bootstrap_servers"],
-        'group.id': self.config["group_id"],
-        'auto.offset.reset': 'earliest'}
+                     'group.id': self.config["group_id"],
+                     'auto.offset.reset': 'earliest'}
         self.consumer = Consumer(self.conf)
         self.consumer.subscribe([self.config["topic"]])
 
