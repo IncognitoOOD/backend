@@ -7,6 +7,8 @@ class MySQL:
         self.db = None
         self.cursor = None
         self.__connect()
+        self.cursor.execute("SHOW columns FROM {};".format(self.config["table"]))
+        self.columns = [item["Field"] for item in self.cursor.fetchall()]
 
     def __connect(self):
         d = {}

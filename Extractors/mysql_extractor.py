@@ -22,7 +22,7 @@ class MySQLExtractor(Extractor, MySQL):
         return self.__convert_jsons_to_datacapsule_list(result)
 
     def __convert_jsons_to_datacapsule_list(self, jsons: List[dict]):
-        ans = [DataCapsule(item) for item in jsons]
+        ans = [DataCapsule(item, self.columns) for item in jsons]
         return ans
 
 
