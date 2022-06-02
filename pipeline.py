@@ -57,7 +57,8 @@ class Pipeline:
             data = transformer.run(data)
         self.__loader.write_data_capsule_list(data)
 
-    def test_pipeline_config(self, full_config: dict):
+    @classmethod
+    def test_pipeline_config(cls, full_config: dict):
         # test pipeline
         return True
 
