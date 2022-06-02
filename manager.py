@@ -11,7 +11,6 @@ class Manager:
     def run(self):
         # run manager
         while True:
-            print("running")
             for pipeline in self.__pipelines:
                 if pipeline.should_run():
                     pipeline.run()
