@@ -7,11 +7,11 @@ from Loaders.kafka_loader import KafkaLoader
 class LoaderFactory:
     @classmethod
     def create_object(cls, config: dict):
-        if str(config["type"]).lower() == "mysql":
+        if str(config["platform"]).lower() == "mysql":
             return MySQLLoader(config)
-        elif str(config["type"]).lower() == "postgresql":
+        elif str(config["platform"]).lower() == "postgresql":
             return PostgreSQLLoader(config)
-        elif str(config["type"]).lower() == "kafka":
+        elif str(config["platform"]).lower() == "kafka":
             return KafkaLoader(config)
-        elif str(config["type"]).lower() == "csv":
+        elif str(config["platform"]).lower() == "csv":
             return CSVLoader(config)

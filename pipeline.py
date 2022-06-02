@@ -59,7 +59,17 @@ class Pipeline:
 
     @classmethod
     def test_pipeline_config(cls, full_config: dict):
-        # test pipeline
+        try:
+            _ = LoaderFactory.create_object(full_config["loader"])
+        except Exception:
+            return False, ["Incorrect loader config"]
+        try:
+            _ = ExtractorFactory.create_object(full_config["extractor"])
+        except Exception:
+            return False, ["Incorrect extractor config"]
+
+        # TODO TRY TRANSFORMER
+
         return True
 
 
