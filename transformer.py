@@ -9,18 +9,29 @@ class Transformer:
         self.config = config
 
     def __rename(self, dc: DataCapsule):
-        rename = self.config['rename']
-        if rename:
-            for r in rename:
-                old_name = list(r.keys())[0]
-                new_name = list(r.values())[0]
-                dc.document[new_name] = dc.document[old_name]
-                del dc.document[old_name]
+        new_dc = DataCapsule()
+        rename = self.config.get('rename')
+        mp = {}
+        for item in rename:
+            mp = {**mp, **item}
 
-        return dc
+        if rename:
+            if dc.fields:
+                for field in dc.fields:
+                    the_name = mp[field] if field in mp else field
+                    new_dc.fields.append(the_name)
+                    new_dc.document[the_name] = dc.document[field]
+            else:
+                for item in dc.document.items():
+                    field = item[0]
+                    value = item[1]
+                    the_name = mp[field] if field in mp else field
+                    new_dc.document[the_name] = value
+
+        return new_dc
 
     def __concat(self, dc: DataCapsule):
-        concat = self.config['concat']
+        concat = self.config.get('concat')
         if concat:
             for c in concat:
                 dest_field = list(c.keys())[0]
@@ -32,7 +43,7 @@ class Transformer:
         return dc
 
     def __api_call(self, dc: DataCapsule):
-        api_call = self.config['api_call']
+        api_call = self.config.get('api_call')
         if api_call:
             for a in api_call:
                 dest_field = a['dest_field']
@@ -59,7 +70,7 @@ class Transformer:
                     try:
                         response = requests.post(url=api_address, params=params)
                     except Exception:
-                        raise Exception('API returned to response')
+                        raise Exception('API returned no response')
 
                 dc.document[dest_field] = response.text
 
@@ -73,4 +84,4 @@ class Transformer:
             api_called = self.__api_call(concatenated)
             ret_list.append(api_called)
 
-        return dc_list
+        return ret_list
