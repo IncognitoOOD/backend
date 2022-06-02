@@ -2,3 +2,5 @@ requests
 mysql-connector
 psycopg2-binary
 confluent-kafka
+uvicorn
+fastapi
