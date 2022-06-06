@@ -9,8 +9,22 @@ services:
       - 8080:8080
     restart: on-failure
   worker1:
-    image: safdarian/incognito-ood-backend-worker
+    image: safdarian/incognito-ood-worker
     container_name: worker1
     ports:
       - 8001:8000
     restart: on-failure
+    volumes:
+      - ./csv_files:/csv_files
+    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  worker2:
+    image: safdarian/incognito-ood-worker
+    container_name: worker1
+    ports:
+      - 8002:8000
+    restart: on-failure
+    volumes:
+      - ./csv_files:/csv_files
+    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000"]
+  
