@@ -49,6 +49,7 @@ class Transformer:
                 dest_field = a['dest_field']
                 api_address = a['api_address']
                 method = a['method']
+                response_field = a['response_field']
 
                 args = a['args']
                 params = dict()
@@ -72,7 +73,7 @@ class Transformer:
                     except Exception:
                         raise Exception('API returned no response')
 
-                dc.document[dest_field] = response.text
+                dc.document[dest_field] = response.json()[response_field]
 
         return dc
 
