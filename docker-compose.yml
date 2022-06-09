@@ -8,11 +8,18 @@ services:
     ports:
       - 8080:8080
     restart: on-failure
+  
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports: 
+      - 8000:8000
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
   worker1:
     image: safdarian/incognito-ood-worker
     container_name: worker1
-    ports:
-      - 8001:8000
     restart: on-failure
     volumes:
       - ./csv_files:/csv_files
@@ -20,9 +27,7 @@ services:
 
   worker2:
     image: safdarian/incognito-ood-worker
-    container_name: worker1
-    ports:
-      - 8002:8000
+    container_name: worker2
     restart: on-failure
     volumes:
       - ./csv_files:/csv_files
