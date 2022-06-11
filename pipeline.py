@@ -16,8 +16,6 @@ class Pipeline:
 
     def __init__(self, config: dict):
         self.__config = config
-        if self.__config.get("interval"):
-            self.__config["interval"] = float(self.__config["interval"])
 
         if not self.__config.get("unique_id"):
             self.__config["unique_id"] = self.generate_unique_id()
