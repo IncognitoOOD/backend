@@ -25,6 +25,9 @@ class Pipeline:
         self.__extractor = ExtractorFactory.create_object(config["extractor"])
         self.__transformers = [Transformer(item) for item in config["transformers"]]
 
+    def get_config(self):
+        return self.__config
+
     def generate_unique_id(self):
         # generate a random unique string
         x = ""
@@ -36,19 +39,10 @@ class Pipeline:
         return self.__config['unique_id']
 
     def should_run(self):
-        if not self.__config.get("interval"):
-            if self.__config.get("disabled"):
-                return False
-            else:
-                self.__config["disabled"] = True
-                return True
+        if self.__config.get("disabled"):
+            return False
         else:
-            if self.__config.get("last_run"):
-                if time.time() - self.__config.get("last_run") >= self.__config.get("interval"):
-                    return True
-            else:
-                self.__config["last_run"] = time.time()
-                return True
+            return True
 
     def run(self):
         # run pipeline
@@ -56,6 +50,7 @@ class Pipeline:
         for transformer in self.__transformers:
             data = transformer.run(data)
         self.__loader.write_data_capsule_list(data)
+        self.__config["disabled"] = True
 
     @classmethod
     def test_pipeline_config(cls, full_config: dict):
