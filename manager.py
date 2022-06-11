@@ -2,11 +2,13 @@ import threading
 from pipeline import Pipeline
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request, FastAPI
+from db_manager import MongoManager
 
 
 class Manager:
     def __init__(self):
         self.__pipelines = []
+        self.db = MongoManager()
 
     def run(self):
         # run manager
@@ -14,9 +16,7 @@ class Manager:
             for pipeline in self.__pipelines:
                 if pipeline.should_run():
                     pipeline.run()
-
-    def get_number_of_pipelines(self):
-        return len(self.__pipelines)
+                    self.db.disable(pipeline.get_config())
 
     def add_pipeline(self, full_config: dict):
         # add pipeline
@@ -49,20 +49,3 @@ async def add_pipeline_config(request: Request):
     config = await request.json()
     id = manager.add_pipeline(config)
     return {"status": "ok", "unique_id": id}
-
-
-@app.post("/test_pipeline_config")
-async def test_pipeline_config(request: Request):
-    config = await request.json()
-
-    # if state == 0:
-    #     d = {
-    #         "status": "not_ok",
-    #         "error_messages": ["there was a problem in extractor query", "loader table doesn't exist"]
-    #     }
-    # else:
-    #     d = {
-    #         "status": "ok"
-    #     }
-    # state = 1 - state
-    return {"status": "ok"}
