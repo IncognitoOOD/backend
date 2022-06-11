@@ -42,10 +42,10 @@ if __name__ == "__main__":
     # db.insert({"name": "reznov", "nickname": "hero wolf of berlin"})
 
     print(db.select())
-    db.disable({"name": "reznov"})
-    print(db.select())
-    # print(db.search_by_condition({"name": "reznov"}))
-    db.enable({"name": "reznov"})
-    print(db.select())
+    # db.disable({"name": "reznov"})
+    # print(db.select())
+    # # print(db.search_by_condition({"name": "reznov"}))
+    # db.enable({"name": "reznov"})
+    # print(db.select())
 
 
