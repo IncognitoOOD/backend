@@ -63,7 +63,7 @@ class Pipeline:
 
         # TODO TRY TRANSFORMER
 
-        return True
+        return True, ["ok"]
 
 
 if __name__ == "__main__":
