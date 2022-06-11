@@ -28,6 +28,12 @@ class MongoManager:
         result = self.configs.find(conditions)
         return [item for item in result]
 
+    def disable(self, conditions: dict):
+        self.configs.update_one(conditions, {"$set": {"disabled": True}})
+
+    def enable(self, conditions: dict):
+        self.configs.update_one(conditions, {"$set": {"disabled": False}})
+
 
 if __name__ == "__main__":
     db = MongoManager()
