@@ -1,8 +1,8 @@
 {
-  "host": "localhost",
+  "host": "mongo",
   "port": 27017,
   "username": "root",
-  "password": "example",
+  "password": "root",
   "database": "configs_db",
   "collection": "configs"
 }
