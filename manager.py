@@ -3,6 +3,7 @@ from pipeline import Pipeline
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Request, FastAPI
 from db_manager import MongoManager
+import uvicorn
 
 
 class Manager:
@@ -56,6 +57,11 @@ async def add_pipeline_config(request: Request):
 
 
 @app.get("/retrieve_key/{unique_id}")
-def retrieve(request: Request, unique_id: str):
+def retrieve(request: Request, unique_id):
     result = manager.db.search_by_condition({"unique_id": unique_id})
+    result[0].pop("_id")
     return result[0]
+
+
+if __name__ == "__main__":
+    uvicorn.run("manager:app", host="127.0.0.1", port=8000, reload=False)
