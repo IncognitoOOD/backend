@@ -7,11 +7,15 @@ from Extractors.kafka_extractor import KafkaExtractor
 class ExtractorFactory:
     @classmethod
     def create_object(cls, config: dict):
-        if str(config["platform"]).lower() == "mysql":
+        connection_info = config["Connection_info"]
+        platform = config["Platform"]
+        config = connection_info
+        config["platform"] = platform
+        if platform   == "MySQL":
             return MySQLExtractor(config)
-        elif str(config["platform"]).lower() == "postgresql":
+        elif platform == "PostgreSQL":
             return PostgreSQLExtractor(config)
-        elif str(config["platform"]).lower() == "kafka":
+        elif platform == "Kafka":
             return KafkaExtractor(config)
-        elif str(config["platform"]).lower() == "csv":
+        elif platform == "CSVFile":
             return CSVExtractor(config)
