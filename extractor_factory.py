@@ -10,6 +10,7 @@ extractor_function = {
     "CSVFile": CSVExtractor
 }
 
+
 class ExtractorFactory:
     @classmethod
     def create_object(cls, config: dict):
