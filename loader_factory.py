@@ -10,6 +10,7 @@ loader_function = {
     "CSVFile": CSVLoader
 }
 
+
 class LoaderFactory:
     @classmethod
     def create_object(cls, config: dict):
@@ -17,11 +18,4 @@ class LoaderFactory:
         platform = config["Platform"]
         config = connection_info
         config["platform"] = platform
-        if str(platform)   == "MySQL":
-            return MySQLLoader(config)
-        elif str(platform) == "PostgreSQL":
-            return PostgreSQLLoader(config)
-        elif str(platform) == "Kafka":
-            return KafkaLoader(config)
-        elif str(platform) == "CSVFile":
-            return CSVLoader(config)
+        return loader_function[platform](config)

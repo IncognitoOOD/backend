@@ -3,6 +3,12 @@ from Extractors.mysql_extractor import MySQLExtractor
 from Extractors.postgresql_extractor import PostgreSQLExtractor
 from Extractors.kafka_extractor import KafkaExtractor
 
+extractor_function = {
+    "MySQL": MySQLExtractor,
+    "PostgreSQL": PostgreSQLExtractor,
+    "Kafka": KafkaExtractor,
+    "CSVFile": CSVExtractor
+}
 
 class ExtractorFactory:
     @classmethod
@@ -11,11 +17,4 @@ class ExtractorFactory:
         platform = config["Platform"]
         config = connection_info
         config["platform"] = platform
-        if platform   == "MySQL":
-            return MySQLExtractor(config)
-        elif platform == "PostgreSQL":
-            return PostgreSQLExtractor(config)
-        elif platform == "Kafka":
-            return KafkaExtractor(config)
-        elif platform == "CSVFile":
-            return CSVExtractor(config)
+        return extractor_function[platform](config)
