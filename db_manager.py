@@ -37,8 +37,15 @@ class MongoManager:
 
 if __name__ == "__main__":
     db = MongoManager()
+    # print(db.select())
+    # db.insert({"name": "Till", "family": "Lindemann"})
+    # db.insert({"name": "reznov", "nickname": "hero wolf of berlin"})
+
     print(db.select())
-    db.insert({"name": "Till", "family": "Lindemann"})
+    db.disable({"name": "reznov"})
     print(db.select())
-    print(db.search_by_condition({"name": "reznov"}))
+    # print(db.search_by_condition({"name": "reznov"}))
+    db.enable({"name": "reznov"})
+    print(db.select())
+
 
