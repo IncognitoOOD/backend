@@ -8,6 +8,8 @@ services:
     ports:
       - "8080:8080"
     restart: on-failure
+    networks:
+      - ood_network
   
   nginx:
     image: nginx
@@ -19,6 +21,8 @@ services:
     depends_on:
       - worker1
       - worker2
+    networks:
+      - ood_network
 
   worker1:
     image: safdarian/incognito-ood-worker
@@ -27,6 +31,8 @@ services:
     volumes:
       - ./csv_files:/csv_files
     command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - ood_network
 
   worker2:
     image: safdarian/incognito-ood-worker
@@ -35,6 +41,8 @@ services:
     volumes:
       - ./csv_files:/csv_files
     command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    networks:
+      - ood_network
   
   mongo:
     image: mongo
@@ -45,3 +53,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - "27017:27017"
+    networks:
+      - ood_network
+
+networks:
+  ood_network:
+    name: ood_network

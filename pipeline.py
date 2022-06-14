@@ -55,6 +55,8 @@ class Pipeline:
         try:
             _ = LoaderFactory.create_object(full_config["loader"])
         except Exception:
+            print(full_config)
+            print(full_config["loader"])
             return False, ["Incorrect loader config"]
         try:
             _ = ExtractorFactory.create_object(full_config["extractor"])
