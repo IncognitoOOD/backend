@@ -49,6 +49,7 @@ app.add_middleware(
 @app.post("/add_pipeline_config")
 async def add_pipeline_config(request: Request):
     config = await request.json()
+    config = config["body"]
     test_result = manager.test_pipeline_config(config)
     if not test_result[0]:
         return {"status": "not_ok", "error_messages": test_result[1]}
