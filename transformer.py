@@ -34,7 +34,7 @@ class Transformer:
         concat = self.config.get('concat')
         if concat:
             print("concat", concat)
-            for item in concat.items():
+            for item in concat:
                 print("item", item)
                 c = item
                 sep = c['sep']
