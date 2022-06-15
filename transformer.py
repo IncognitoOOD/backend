@@ -36,9 +36,9 @@ class Transformer:
             print("concat", concat)
             for item in concat:
                 print("item", item)
-                c = item
+                c = item.copy()
                 sep = c['sep']
-                c.pop["sep"]
+                c.pop("sep")
                 for k, v in c:
                     dest_field = k
                     src_fields = [i for i in v]
