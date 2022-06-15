@@ -9,8 +9,6 @@ class Transformer:
         self.config = config
 
     def __rename(self, dc: DataCapsule):
-        print("rename")
-        dc.beautiful_print()
         new_dc = DataCapsule()
         rename = self.config.get('rename')
         mp = {}
@@ -29,17 +27,14 @@ class Transformer:
                     value = item[1]
                     the_name = mp[field] if field in mp else field
                     new_dc.document[the_name] = value
-
+        else:
+            return dc
         return new_dc
 
     def __concat(self, dc: DataCapsule):
-        print("concat")
-        dc.beautiful_print()
         concat = self.config.get('concat')
         if concat:
-            print("concat", concat)
             for item in concat:
-                print("item", item)
                 c = item.copy()
                 sep = c['sep']
                 c.pop("sep")
@@ -87,22 +82,11 @@ class Transformer:
         return dc
 
     def run(self, dc_list: list):
-        print("run_called")
         ret_list = list()
         for dc in dc_list:
-            print("before rename")
-            dc.beautiful_print()
-            
             renamed = self.__rename(dc)
-            print("after rename")
-            renamed.beautiful_print()
-
             concatenated = self.__concat(renamed)
-            print("after concat")
-            concatenated.beautiful_print()
             api_called = self.__api_call(concatenated)
-            print("after api_call")
-            api_called.beautiful_print()
             ret_list.append(api_called)
 
         return ret_list
