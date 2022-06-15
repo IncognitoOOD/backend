@@ -19,11 +19,17 @@ class Manager:
                     pipeline.run()
                     self.db.disable(pipeline.get_config())
 
+    def one_run(self, pipeline):
+            if pipeline.should_run():
+                pipeline.run()
+                self.db.disable(pipeline.get_config())
+
     def add_pipeline(self, full_config: dict):
         # add pipeline
         p = Pipeline(full_config)
         self.__pipelines.append(p)
         manager.db.insert(p.get_config())
+        self.one_run(p)
         return p.get_unique_id()
 
     def test_pipeline_config(self, full_config: dict):
@@ -31,8 +37,8 @@ class Manager:
 
 
 manager = Manager()
-t = threading.Thread(target=manager.run)
-t.start()
+# t = threading.Thread(target=manager.run)
+# t.start()
 
 app = FastAPI()
 

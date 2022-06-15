@@ -30,7 +30,7 @@ services:
     restart: on-failure
     volumes:
       - ./csv_files:/csv_files
-    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - ood_network
 
@@ -40,7 +40,7 @@ services:
     restart: on-failure
     volumes:
       - ./csv_files:/csv_files
-    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "manager:app", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - ood_network
   
