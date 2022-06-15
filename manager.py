@@ -60,8 +60,10 @@ async def add_pipeline_config(request: Request):
 @app.get("/retrieve_key/{unique_id}")
 def retrieve(request: Request, unique_id):
     result = manager.db.search_by_condition({"unique_id": unique_id})
-    result[0].pop("_id")
-    return result[0]
+    if len(result):
+        result[0].pop("_id")
+        return result[0]
+    return {"status": "not_ok", "error_messages": ["Pipeline not found"]}
 
 
 if __name__ == "__main__":
