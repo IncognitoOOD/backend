@@ -33,14 +33,18 @@ class Transformer:
     def __concat(self, dc: DataCapsule):
         concat = self.config.get('concat')
         if concat:
-            sep = concat['sep']
-            concat.pop["sep"]
-            for k, v in concat.items():                
-                dest_field = k
-                src_fields = [i for i in v]
-                dc.document[dest_field] = str(sep).join([dc.document[i] for i in src_fields])
-                if dest_field not in dc.fields:
-                    dc.fields.append(dest_field)
+            print("concat", concat)
+            for item in concat.items():
+                print("item", item)
+                c = item
+                sep = c['sep']
+                c.pop["sep"]
+                for k, v in c:
+                    dest_field = k
+                    src_fields = [i for i in v]
+                    dc.document[dest_field] = str(sep).join([dc.document[i] for i in src_fields])
+                    if dest_field not in dc.fields:
+                        dc.fields.append(dest_field)
         return dc
 
     def __api_call(self, dc: DataCapsule):
