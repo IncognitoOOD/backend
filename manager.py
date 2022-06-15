@@ -62,6 +62,7 @@ def retrieve(request: Request, unique_id):
     result = manager.db.search_by_condition({"unique_id": unique_id})
     if len(result):
         result[0].pop("_id")
+        result[0]["status"] = "ok"
         return result[0]
     return {"status": "not_ok", "error_messages": ["Pipeline not found"]}
 
