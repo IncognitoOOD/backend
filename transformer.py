@@ -39,9 +39,9 @@ class Transformer:
                 c = item.copy()
                 sep = c['sep']
                 c.pop("sep")
-                for k, v in c:
+                for k, v in c.items():
                     dest_field = k
-                    src_fields = [i for i in v]
+                    src_fields = v
                     dc.document[dest_field] = str(sep).join([dc.document[i] for i in src_fields])
                     if dest_field not in dc.fields:
                         dc.fields.append(dest_field)
