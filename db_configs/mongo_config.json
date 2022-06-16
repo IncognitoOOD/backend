@@ -1,5 +1,5 @@
 {
-  "host": "mongo1",
+  "host": ["mongo1", "mongo2", "mongo3"],
   "port": 27017,
   "username": "root",
   "password": "root",
