@@ -1,7 +1,6 @@
 import json
 import pymongo
 
-
 class MongoManager:
     def __init__(self):
         self.mongo_config = json.loads(open("db_configs/mongo_config.json", "r").read())
@@ -11,9 +10,15 @@ class MongoManager:
             "username":   self.mongo_config["username"],
             "password":   self.mongo_config["password"],
             "database":   self.mongo_config["database"],
-            "collection": self.mongo_config["collection"]
+            "collection": self.mongo_config["collection"],
+            "replica_set": self.mongo_config["replica_set"]
         }
-        self.client = pymongo.MongoClient("mongodb://{}:{}/".format(d["host"], str(d["port"])), username=d["username"], password=d["password"])
+        # self.connection = ReplicaSetConnection("mongodb://{}:{}/".format(d["host"], str(d["port"])), str(d["replica_set"]))
+        # print(self.connection)
+        # hosts = ["localhost:27017", "localhost:27018", "localhost:27019"]
+        # self.client = pymongo.MongoClient(hosts, replicaSet=d["replica_set"])
+        self.client = pymongo.MongoClient("mongodb://{}:{}/".format(d["host"], str(d["port"])), replicaSet=d["replica_set"])
+        print(self.client)
         self.mydb = self.client[d["database"]]
         self.configs = self.mydb[d["collection"]]
 

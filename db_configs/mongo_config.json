@@ -1,8 +1,9 @@
 {
-  "host": "mongo",
+  "host": "mongo1",
   "port": 27017,
   "username": "root",
   "password": "root",
   "database": "configs_db",
-  "collection": "configs"
+  "collection": "configs",
+  "replica_set": "dbrs"
 }

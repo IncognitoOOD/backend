@@ -44,18 +44,44 @@ services:
     networks:
       - ood_network
   
-  mongo:
+  mongo1:
+    container_name: mongo1
     image: mongo
-    container_name: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    ports:
-      - "27017:27017"
+    volumes:
+      - ~/mongors/data1:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - ood_network
-
+    ports:
+      - 27017:27017
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo2:
+    container_name: mongo2
+    image: mongo
+    volumes:
+      - ~/mongors/data2:/data/db
+    networks:
+      - ood_network
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo3:
+    container_name: mongo3
+    image: mongo
+    volumes:
+      - ~/mongors/data3:/data/db
+    networks:
+      - ood_network
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+      
 networks:
   ood_network:
     name: ood_network
