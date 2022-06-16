@@ -17,8 +17,8 @@ class MongoManager:
         # print(self.connection)
         # hosts = ["localhost:27017", "localhost:27018", "localhost:27019"]
         # self.client = pymongo.MongoClient(hosts, replicaSet=d["replica_set"])
-        hosts = ["mongodb://{}:{}/".format(h, str(d["port"])) for h in d["host"]]
-        self.client = pymongo.MongoClient(hosts, replicaSet=d["replica_set"])
+        # hosts = ["mongodb://{}:{}/".format(h, str(d["port"])) for h in d["host"]]
+        self.client = pymongo.MongoClient(d["host"], replicaSet=d["replica_set"])
         print(self.client)
         self.mydb = self.client[d["database"]]
         self.configs = self.mydb[d["collection"]]
