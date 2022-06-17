@@ -1,3 +1,4 @@
+from enum import unique
 import json
 import pymongo
 
@@ -29,7 +30,7 @@ class MongoManager:
 
     def get_all_keys(self):
         result = self.configs.find()
-        return [item["unique_id"] for item in result]
+        return [item["unique_id"] for item in result if "unique_id" in item]
 
 
     def insert(self, document: dict):
