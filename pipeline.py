@@ -8,6 +8,7 @@ from extractor_factory import ExtractorFactory
 from loader_factory import LoaderFactory
 from transformer import Transformer
 from redis_manager import RedisManager
+from unique_key_manager import UniqueKeyManager
 
 class Pipeline:
     __config: dict
@@ -17,7 +18,7 @@ class Pipeline:
 
     def __init__(self, config: dict):
         self.__config = config
-
+        self.unique_key_manager = UniqueKeyManager()
         if not self.__config.get("unique_id"):
             self.__config["unique_id"] = self.generate_unique_id()
         self.__loader = LoaderFactory.create_object(config["loader"])
@@ -29,11 +30,7 @@ class Pipeline:
         return self.__config
 
     def generate_unique_id(self):
-        # generate a random unique string
-        x = ""
-        for i in range(8):
-            x += str(random.randint(0, 9))
-        return x
+        return self.unique_key_manager.get_unique_key()
 
     def get_unique_id(self):
         return self.__config['unique_id']
