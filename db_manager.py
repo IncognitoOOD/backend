@@ -27,6 +27,11 @@ class MongoManager:
         result = self.configs.find()
         return [item for item in result]
 
+    def list_of_keys(self):
+        result = self.configs.find()
+        return [item["unique_id"] for item in result]
+
+
     def insert(self, document: dict):
         self.configs.insert_one(document)
 
