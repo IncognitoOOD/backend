@@ -11,3 +11,6 @@ class Extractor(ABC):
     @abstractmethod
     def read_data_capsule_list(self) -> List[DataCapsule]:
         pass
+    
+    def run(self, dc_list=None):
+        return self.read_data_capsule_list()

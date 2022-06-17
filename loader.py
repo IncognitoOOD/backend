@@ -11,3 +11,7 @@ class Loader(ABC):
     @abstractmethod
     def write_data_capsule_list(self, dc_list: List[DataCapsule]):
         pass
+
+    def run(self, dc_list=None):
+        self.write_data_capsule_list(dc_list=dc_list)
+        return dc_list
