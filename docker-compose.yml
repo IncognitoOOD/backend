@@ -81,7 +81,13 @@ services:
       - 27019:27017
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
-      
+  redis:
+    container_name: redis
+    image: redis
+    networks:
+      - ood_network
+    ports:
+      - 6379:6379
 networks:
   ood_network:
     name: ood_network
