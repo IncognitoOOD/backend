@@ -1,12 +1,13 @@
 import time
 import json
+from data_capsule import DataCapsule
 from extractor import Extractor
 from loader import Loader
 import random
 from extractor_factory import ExtractorFactory
 from loader_factory import LoaderFactory
 from transformer import Transformer
-
+from redis_manager import RedisManager
 
 class Pipeline:
     __config: dict
@@ -22,6 +23,7 @@ class Pipeline:
         self.__loader = LoaderFactory.create_object(config["loader"])
         self.__extractor = ExtractorFactory.create_object(config["extractor"])
         self.__transformers = [Transformer(item) for item in config["transformers"]]
+        self.redis = RedisManager()
 
     def get_config(self):
         return self.__config
@@ -43,12 +45,29 @@ class Pipeline:
             return True
 
     def run(self):
-        # run pipeline
-        data = self.__extractor.read_data_capsule_list()
-        for transformer in self.__transformers:
-            data = transformer.run(data)
-        self.__loader.write_data_capsule_list(data)
-        self.__config["disabled"] = True
+        if self.redis.key_exists(self.get_unique_id()) and self.redis.load_state(self.get_unique_id()) != "finished":
+            rdata = self.redis.load_state(self.get_unique_id())
+            dc_list = [DataCapsule(json_data=i) for i in rdata["data"]]
+            step = int(rdata["step"])
+            job_list = [self.__extractor] + self.__transformers + [self.__loader]
+            while step < len(job_list):
+                job = job_list[step]
+                dc_list = job.run(dc_list)
+                step += 1
+                self.redis.save_state(self.get_unique_id(), {"step": step, "data": [i.get_json() for i in dc_list]})
+            self.__config["disabled"] = True
+        else:
+            step = 0
+            data = self.__extractor.read_data_capsule_list()
+            step = 1
+            self.redis.save_state(self.get_unique_id(), {"step": step, "data": [i.get_json() for i in data]})
+            for transformer in self.__transformers:
+                data = transformer.run(data)
+                step += 1
+                self.redis.save_state(self.get_unique_id(), {"step": step, "data": [i.get_json() for i in data]})
+            self.__loader.write_data_capsule_list(data)
+            self.redis.save_state(self.get_unique_id(), "finished")
+            self.__config["disabled"] = True
 
     @classmethod
     def test_pipeline_config(cls, full_config: dict):
