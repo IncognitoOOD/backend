@@ -8,7 +8,8 @@ class UniqueKeyManager:
         self.db = MongoManager()
         self.used_keys = set(self.db.get_all_keys())
         self.num_of_keys = 20
-        self.keys = self.watch_keys()
+        self.keys = []
+        self.watch_keys()
 
     def watch_keys(self):
         while True:
@@ -16,7 +17,7 @@ class UniqueKeyManager:
                 key = self.__generate_one_key()
                 if key not in self.used_keys:
                     self.keys.append(key)
-                    self.used_keys.insert(key)
+                    self.used_keys.add(key)
             else:
                 break
 
@@ -32,3 +33,13 @@ class UniqueKeyManager:
         key = self.keys.pop()
         Thread(target=self.watch_keys).start()
         return key
+
+if __name__ == "__main__":
+    um = UniqueKeyManager()
+    print(um.get_unique_key())
+    print(um.keys)
+    print(um.get_unique_key())
+    print(um.get_unique_key())
+    print(um.get_unique_key())
+    print(um.keys)
+    
