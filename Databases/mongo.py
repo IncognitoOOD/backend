@@ -4,12 +4,12 @@ class MongoDB:
     def __init__(self, config):
         self.config = config
         d = {
-            "host":       self.mongo_config["host"],
-            "port":       self.mongo_config["port"],
-            "username":   self.mongo_config["username"],
-            "password":   self.mongo_config["password"],
-            "database":   self.mongo_config["database"],
-            "collection": self.mongo_config["collection"]
+            "host":       self.config["host"],
+            "port":       self.config["port"],
+            "username":   self.config["username"],
+            "password":   self.config["password"],
+            "database":   self.config["database"],
+            "collection": self.config["collection"]
         }
         self.client = pymongo.MongoClient(**d)
         self.mydb = self.client[d["database"]]
