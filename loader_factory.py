@@ -1,13 +1,16 @@
 from Loaders.csv_loader import CSVLoader
+from Loaders.mongo_loader import MongoLoader
 from Loaders.mysql_loader import MySQLLoader
 from Loaders.postgresql_loader import PostgreSQLLoader
 from Loaders.kafka_loader import KafkaLoader
+from Loaders.mongo_loader import MongoLoader
 
 loader_function = {
     "MySQL": MySQLLoader,
     "PostgreSQL": PostgreSQLLoader,
     "Kafka": KafkaLoader,
-    "CSVFile": CSVLoader
+    "CSVFile": CSVLoader,
+    "MongoDB": MongoLoader
 }
 
 
